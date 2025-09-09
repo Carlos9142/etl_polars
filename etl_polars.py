@@ -1,7 +1,10 @@
 # etl_polars.py
 # Explorador de tesoros con Polars ⚡
 
+from datetime import datetime
 import polars as pl
+import os
+print("Estoy ejecutando desde:", os.getcwd())
 
 # 1. Ruta del archivo
 archivo = "data/ventas.csv"
@@ -51,14 +54,13 @@ ventas_diarias = (
           pl.col("total").sum().alias("ventas_totales"),
           (pl.col("total").sum() / pl.col("cantidad").sum()).alias("ticket_promedio")
       ])
-      .sort("fecha")
+    .sort("fecha")
 )
 
 print("\n📆 Ventas agrupadas por fecha:")
 print(ventas_diarias)
 
 # 9. Exportar resultados a CSV con timestamp en el nombre
-from datetime import datetime
 
 # Crear timestamp (ej: 2025-09-02_1530)
 timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
